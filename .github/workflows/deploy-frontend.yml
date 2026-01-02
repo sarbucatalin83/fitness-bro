@@ -50,10 +50,10 @@ jobs:
           supabase link --project-ref ${{ secrets.SUPABASE_PROJECT_REF }}
 
           # Clear existing files in storage bucket
-          supabase storage rm --experimental -r supabase://website/ || true
+          supabase storage rm --experimental -r ss:///website/public || true
 
           # Upload new build files
-          supabase storage cp --experimental -r dist/fitness-app/browser/* supabase://website/
+          supabase storage cp --experimental -r dist/fitness-app/browser/* ss:///website/public
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
 
