@@ -54,19 +54,21 @@ supabase db reset
 
 ### 5. Configure Frontend Environment
 
-Create `frontend/src/environments/environment.ts`:
+The frontend environment files are pre-configured with the Supabase project credentials.
 
-```typescript
-export const environment = {
-  production: false,
-  supabaseUrl: 'http://127.0.0.1:54321',
-  supabaseAnonKey: '<your-local-anon-key>',
-};
+For local development with a local Supabase instance, update `frontend/src/environments/environment.ts` with your local credentials from `supabase status` output.
+
+### 6. Configure Backend Environment
+
+Copy the example environment file and fill in your credentials:
+
+```bash
+cd backend
+cp .env.example .env
+# Edit .env with your actual SUPABASE_SERVICE_ROLE_KEY and DB_PASSWORD
 ```
 
-Get the anon key from `supabase status` output.
-
-### 6. Start Development Server
+### 7. Start Development Server
 
 ```bash
 # From root directory
