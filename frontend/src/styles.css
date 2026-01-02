@@ -1,0 +1,57 @@
+/* Import fonts first */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons+Round');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base styles */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: #F3F4F6;
+}
+
+/* Custom utility classes */
+@layer components {
+  .btn-primary {
+    @apply bg-primary-500 text-white font-semibold py-3 px-6 rounded-full hover:bg-primary-600 transition-colors;
+  }
+
+  .card {
+    @apply bg-white rounded-2xl p-4 shadow-sm;
+  }
+
+  .chip {
+    @apply px-4 py-2 rounded-full text-sm font-medium transition-colors;
+  }
+
+  .chip-active {
+    @apply bg-primary-500 text-white;
+  }
+
+  .chip-inactive {
+    @apply bg-gray-100 text-gray-600 hover:bg-gray-200;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all;
+  }
+
+  .bottom-nav {
+    @apply fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-4 py-2 flex justify-around items-center;
+  }
+
+  .fab {
+    @apply w-14 h-14 bg-primary-500 rounded-full flex items-center justify-center text-white shadow-lg hover:bg-primary-600 transition-colors;
+  }
+}
+
+/* Safe area padding for mobile */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .bottom-nav {
+    padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+  }
+}

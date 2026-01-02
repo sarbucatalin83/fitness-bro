@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Exercise Database</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#F97316", // Orange accent from screenshot
+                        secondary: "#3B82F6", // Blue accent from screenshot
+                        "background-light": "#F3F4F6",
+                        "background-dark": "#111827", // Very dark gray/black
+                        "surface-light": "#FFFFFF",
+                        "surface-dark": "#1F2937", // Slightly lighter dark gray
+                        "surface-accent-dark": "#374151",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                        sans: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                        'xl': '1rem',
+                        '2xl': '1.5rem',
+                    },
+                },
+            },
+        };
+    </script>
+<style>.no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }.no-scrollbar {
+            -ms-overflow-style: none;scrollbar-width: none;}
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-sans text-gray-900 dark:text-gray-100 min-h-screen antialiased">
+<div class="max-w-md mx-auto min-h-screen relative flex flex-col bg-background-light dark:bg-background-dark shadow-2xl overflow-hidden">
+<div class="h-12 w-full flex justify-between items-center px-6 pt-2 pb-2">
+<span class="text-xs font-semibold dark:text-gray-300">9:41</span>
+<div class="flex space-x-1 items-center">
+<span class="material-icons-round text-sm dark:text-gray-300">signal_cellular_alt</span>
+<span class="material-icons-round text-sm dark:text-gray-300">wifi</span>
+<span class="material-icons-round text-sm dark:text-gray-300">battery_full</span>
+</div>
+</div>
+<header class="px-5 py-4 flex items-center justify-between sticky top-0 z-10 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm">
+<div class="flex items-center gap-3">
+<button class="p-2 -ml-2 rounded-full hover:bg-gray-200 dark:hover:bg-surface-accent-dark transition-colors">
+<span class="material-icons-round text-gray-600 dark:text-gray-300">arrow_back</span>
+</button>
+<h1 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">Exercise Database</h1>
+</div>
+<button class="p-2 -mr-2 rounded-full hover:bg-gray-200 dark:hover:bg-surface-accent-dark transition-colors">
+<span class="material-icons-round text-gray-600 dark:text-gray-300">tune</span>
+</button>
+</header>
+<div class="px-5 pb-4">
+<div class="relative">
+<span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-icons-round text-gray-400">search</span>
+</span>
+<input class="block w-full pl-10 pr-3 py-3 border-none rounded-xl text-sm bg-white dark:bg-surface-dark placeholder-gray-500 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary shadow-sm" placeholder="Search exercises..." type="text"/>
+</div>
+</div>
+<div class="pl-5 pb-6 overflow-x-auto no-scrollbar flex space-x-3">
+<button class="flex-shrink-0 px-4 py-2 bg-primary text-white text-xs font-semibold rounded-full shadow-lg shadow-primary/30 transition hover:bg-primary/90">
+                All
+            </button>
+<button class="flex-shrink-0 px-4 py-2 bg-white dark:bg-surface-dark text-gray-600 dark:text-gray-300 text-xs font-semibold rounded-full border border-gray-200 dark:border-surface-accent-dark shadow-sm whitespace-nowrap hover:bg-gray-50 dark:hover:bg-surface-accent-dark transition">
+                Chest
+            </button>
+<button class="flex-shrink-0 px-4 py-2 bg-white dark:bg-surface-dark text-gray-600 dark:text-gray-300 text-xs font-semibold rounded-full border border-gray-200 dark:border-surface-accent-dark shadow-sm whitespace-nowrap hover:bg-gray-50 dark:hover:bg-surface-accent-dark transition">
+                Back
+            </button>
+<button class="flex-shrink-0 px-4 py-2 bg-white dark:bg-surface-dark text-gray-600 dark:text-gray-300 text-xs font-semibold rounded-full border border-gray-200 dark:border-surface-accent-dark shadow-sm whitespace-nowrap hover:bg-gray-50 dark:hover:bg-surface-accent-dark transition">
+                Legs
+            </button>
+<button class="flex-shrink-0 px-4 py-2 bg-white dark:bg-surface-dark text-gray-600 dark:text-gray-300 text-xs font-semibold rounded-full border border-gray-200 dark:border-surface-accent-dark shadow-sm whitespace-nowrap hover:bg-gray-50 dark:hover:bg-surface-accent-dark transition">
+                Shoulders
+            </button>
+</div>
+<main class="flex-1 px-5 pb-24 overflow-y-auto space-y-4">
+<div class="flex justify-between items-end mb-2">
+<h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Popular</h2>
+<a class="text-xs text-primary font-medium hover:text-primary/80" href="#">View all</a>
+</div>
+<div class="group bg-white dark:bg-surface-dark rounded-xl p-4 shadow-sm border border-gray-100 dark:border-surface-accent-dark flex items-center justify-between hover:border-primary/50 dark:hover:border-primary/50 transition-all cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-secondary">
+<span class="material-icons-round">fitness_center</span>
+</div>
+<div>
+<h3 class="font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors">Bench Press</h3>
+<p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Chest • Barbell</p>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full bg-gray-100 dark:bg-surface-accent-dark flex items-center justify-center text-gray-400 hover:bg-primary hover:text-white transition-colors">
+<span class="material-icons-round text-lg">add</span>
+</button>
+</div>
+<div class="group bg-white dark:bg-surface-dark rounded-xl p-4 shadow-sm border border-gray-100 dark:border-surface-accent-dark flex items-center justify-between hover:border-primary/50 dark:hover:border-primary/50 transition-all cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-500">
+<span class="material-icons-round">accessibility_new</span>
+</div>
+<div>
+<h3 class="font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors">Squat</h3>
+<p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Legs • Barbell</p>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full bg-gray-100 dark:bg-surface-accent-dark flex items-center justify-center text-gray-400 hover:bg-primary hover:text-white transition-colors">
+<span class="material-icons-round text-lg">add</span>
+</button>
+</div>
+<div class="group bg-white dark:bg-surface-dark rounded-xl p-4 shadow-sm border border-gray-100 dark:border-surface-accent-dark flex items-center justify-between hover:border-primary/50 dark:hover:border-primary/50 transition-all cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-500">
+<span class="material-icons-round">rowing</span>
+</div>
+<div>
+<h3 class="font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors">Deadlift</h3>
+<p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Back • Barbell</p>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full bg-gray-100 dark:bg-surface-accent-dark flex items-center justify-center text-gray-400 hover:bg-primary hover:text-white transition-colors">
+<span class="material-icons-round text-lg">add</span>
+</button>
+</div>
+<div class="flex justify-between items-end mt-6 mb-2 pt-2">
+<h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Recent</h2>
+</div>
+<div class="group bg-white dark:bg-surface-dark rounded-xl p-4 shadow-sm border border-gray-100 dark:border-surface-accent-dark flex items-center justify-between hover:border-primary/50 dark:hover:border-primary/50 transition-all cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-500">
+<span class="material-icons-round">vertical_align_top</span>
+</div>
+<div>
+<h3 class="font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors">Pull Up</h3>
+<p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Back • Bodyweight</p>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full bg-gray-100 dark:bg-surface-accent-dark flex items-center justify-center text-gray-400 hover:bg-primary hover:text-white transition-colors">
+<span class="material-icons-round text-lg">add</span>
+</button>
+</div>
+<div class="group bg-white dark:bg-surface-dark rounded-xl p-4 shadow-sm border border-gray-100 dark:border-surface-accent-dark flex items-center justify-between hover:border-primary/50 dark:hover:border-primary/50 transition-all cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center text-red-500">
+<span class="material-icons-round">expand</span>
+</div>
+<div>
+<h3 class="font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors">Overhead Press</h3>
+<p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Shoulders • Barbell</p>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full bg-gray-100 dark:bg-surface-accent-dark flex items-center justify-center text-gray-400 hover:bg-primary hover:text-white transition-colors">
+<span class="material-icons-round text-lg">add</span>
+</button>
+</div>
+<div class="group bg-white dark:bg-surface-dark rounded-xl p-4 shadow-sm border border-gray-100 dark:border-surface-accent-dark flex items-center justify-between hover:border-primary/50 dark:hover:border-primary/50 transition-all cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center text-teal-500">
+<span class="material-icons-round">monitor_weight</span>
+</div>
+<div>
+<h3 class="font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors">Dumbbell Curl</h3>
+<p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Biceps • Dumbbell</p>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full bg-gray-100 dark:bg-surface-accent-dark flex items-center justify-center text-gray-400 hover:bg-primary hover:text-white transition-colors">
+<span class="material-icons-round text-lg">add</span>
+</button>
+</div>
+</main>
+<div class="absolute bottom-24 right-5 z-20">
+<button class="w-14 h-14 bg-primary rounded-full shadow-lg shadow-primary/40 flex items-center justify-center text-white hover:bg-primary/90 transition-transform hover:scale-105 active:scale-95">
+<span class="material-icons-round text-2xl">add</span>
+</button>
+</div>
+<nav class="absolute bottom-0 w-full bg-white dark:bg-surface-dark border-t border-gray-200 dark:border-surface-accent-dark py-3 px-6 flex justify-between items-center z-30">
+<button class="flex flex-col items-center gap-1 group">
+<span class="material-icons-round text-gray-400 group-hover:text-primary transition-colors">dashboard</span>
+<span class="text-[10px] font-medium text-gray-400 group-hover:text-primary transition-colors">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 group">
+<span class="material-icons-round text-primary">fitness_center</span>
+<span class="text-[10px] font-medium text-primary">Exercises</span>
+</button>
+<button class="flex flex-col items-center gap-1 group">
+<span class="material-icons-round text-gray-400 group-hover:text-primary transition-colors">bar_chart</span>
+<span class="text-[10px] font-medium text-gray-400 group-hover:text-primary transition-colors">Progress</span>
+</button>
+<button class="flex flex-col items-center gap-1 group">
+<span class="material-icons-round text-gray-400 group-hover:text-primary transition-colors">person</span>
+<span class="text-[10px] font-medium text-gray-400 group-hover:text-primary transition-colors">Profile</span>
+</button>
+</nav>
+<div class="absolute bottom-0 w-full h-1 z-40 flex justify-center pb-1">
+<div class="w-1/3 h-1 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+</div>
+</div>
+
+</body></html>

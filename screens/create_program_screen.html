@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Create Fitness Program</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#F97316", // Orange accent
+                        secondary: "#3B82F6", // Blue accent
+                        "background-light": "#F3F4F6", 
+                        "background-dark": "#111827", 
+                        "surface-light": "#FFFFFF",
+                        "surface-dark": "#1F2937",
+                        "input-dark": "#374151",
+                        "text-light": "#1F2937",
+                        "text-dark": "#F9FAFB",
+                        "text-muted-dark": "#9CA3AF",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                        sans: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                        'xl': '1rem',
+                        '2xl': '1.5rem',
+                    },
+                },
+            },
+        };
+    </script>
+<style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        body {
+            min-height: max(884px, 100dvh);
+        }input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark font-sans min-h-screen flex justify-center antialiased">
+<div class="w-full max-w-md bg-background-light dark:bg-background-dark min-h-screen relative flex flex-col shadow-2xl overflow-hidden">
+<div class="h-12 w-full flex items-center justify-between px-6 pt-2 z-10">
+<span class="text-sm font-semibold dark:text-white">9:41</span>
+<div class="flex space-x-2">
+<span class="material-icons-round text-sm dark:text-white">signal_cellular_alt</span>
+<span class="material-icons-round text-sm dark:text-white">wifi</span>
+<span class="material-icons-round text-sm dark:text-white">battery_full</span>
+</div>
+</div>
+<header class="px-6 py-4 flex items-center justify-between sticky top-0 z-20 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-md">
+<button class="p-2 -ml-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors">
+<span class="material-icons-round text-2xl text-gray-600 dark:text-gray-300">arrow_back</span>
+</button>
+<h1 class="text-lg font-bold tracking-tight">Create Program</h1>
+<button class="p-2 -mr-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors text-primary font-semibold text-sm">
+                Save
+            </button>
+</header>
+<main class="flex-1 overflow-y-auto px-6 pb-24 no-scrollbar">
+<section class="mb-8">
+<div class="space-y-5">
+<div>
+<label class="block text-xs font-semibold uppercase text-gray-500 dark:text-gray-400 mb-2 tracking-wider" for="program-name">Program Name</label>
+<input class="w-full bg-white dark:bg-surface-dark border-none rounded-xl py-4 px-4 text-base font-medium shadow-sm placeholder-gray-400 dark:placeholder-gray-600 focus:ring-2 focus:ring-primary focus:outline-none transition-all dark:text-white" id="program-name" placeholder="e.g. Summer Shred, PPL Split" type="text"/>
+</div>
+<div>
+<label class="block text-xs font-semibold uppercase text-gray-500 dark:text-gray-400 mb-2 tracking-wider" for="description">Description</label>
+<textarea class="w-full bg-white dark:bg-surface-dark border-none rounded-xl py-3 px-4 text-sm shadow-sm placeholder-gray-400 dark:placeholder-gray-600 focus:ring-2 focus:ring-primary focus:outline-none transition-all resize-none dark:text-gray-300" id="description" placeholder="Brief description of your goal..." rows="2"></textarea>
+</div>
+<div class="flex gap-3 overflow-x-auto no-scrollbar py-1">
+<button class="flex items-center space-x-1 bg-white dark:bg-surface-dark px-4 py-2 rounded-full shadow-sm text-sm font-medium dark:text-gray-200 border border-transparent hover:border-primary transition-colors whitespace-nowrap">
+<span class="material-icons-round text-primary text-base">signal_cellular_alt</span>
+<span>Intermediate</span>
+</button>
+<button class="flex items-center space-x-1 bg-white dark:bg-surface-dark px-4 py-2 rounded-full shadow-sm text-sm font-medium dark:text-gray-200 border border-transparent hover:border-primary transition-colors whitespace-nowrap">
+<span class="material-icons-round text-primary text-base">calendar_today</span>
+<span>4 Weeks</span>
+</button>
+<button class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400">
+<span class="material-icons-round text-lg">add</span>
+</button>
+</div>
+</div>
+</section>
+<section class="space-y-6">
+<div class="flex items-center justify-between mb-2">
+<h2 class="text-base font-bold dark:text-white">Workout Schedule</h2>
+<button class="text-primary text-sm font-semibold flex items-center hover:opacity-80">
+<span class="material-icons-round text-lg mr-1">add_circle</span> Add Day
+                    </button>
+</div>
+<div class="bg-white dark:bg-surface-dark rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-gray-800">
+<div class="flex justify-between items-start mb-4">
+<div class="w-full mr-4">
+<div class="flex items-center gap-2 mb-1 w-full">
+<span class="bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs font-bold px-2 py-1 rounded uppercase tracking-wide shrink-0">Day 1</span>
+<input class="bg-transparent border-b border-dashed border-gray-300 dark:border-gray-600 focus:border-primary p-0 pb-0.5 text-base font-bold text-gray-800 dark:text-white focus:ring-0 w-full placeholder-gray-400 dark:placeholder-gray-500 transition-colors" placeholder="Name this workout day" type="text" value="Push (Chest/Triceps)"/>
+</div>
+<p class="text-xs text-gray-500 dark:text-gray-400 pl-1">3 Exercises • ~45 min</p>
+</div>
+<button class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 mt-1">
+<span class="material-icons-round">more_horiz</span>
+</button>
+</div>
+<div class="space-y-3">
+<div class="bg-gray-50 dark:bg-input-dark/50 rounded-xl p-3 group hover:bg-gray-100 dark:hover:bg-input-dark transition-colors border border-transparent focus-within:border-primary/20 focus-within:ring-1 focus-within:ring-primary/20">
+<div class="flex items-start gap-3">
+<div class="h-10 w-10 bg-white dark:bg-gray-700 rounded-lg flex items-center justify-center shrink-0 shadow-sm border border-gray-100 dark:border-gray-600">
+<span class="material-icons-round text-gray-400 dark:text-gray-300">fitness_center</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-2">
+<h4 class="text-sm font-semibold text-gray-800 dark:text-white truncate">Bench Press</h4>
+<div class="text-gray-400 hover:text-gray-600 cursor-move">
+<span class="material-icons-round text-lg">drag_handle</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div>
+<label class="block text-[10px] font-bold uppercase text-gray-400 dark:text-gray-500 mb-1 ml-1">Sets</label>
+<input class="w-full bg-white dark:bg-surface-dark border-gray-200 dark:border-gray-600 rounded-lg text-sm font-medium py-1.5 px-3 focus:border-primary focus:ring-primary dark:text-white shadow-sm" placeholder="0" type="number" value="3"/>
+</div>
+<div>
+<label class="block text-[10px] font-bold uppercase text-gray-400 dark:text-gray-500 mb-1 ml-1">Reps</label>
+<input class="w-full bg-white dark:bg-surface-dark border-gray-200 dark:border-gray-600 rounded-lg text-sm font-medium py-1.5 px-3 focus:border-primary focus:ring-primary dark:text-white shadow-sm" placeholder="0" type="text" value="8-12"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gray-50 dark:bg-input-dark/50 rounded-xl p-3 group hover:bg-gray-100 dark:hover:bg-input-dark transition-colors border border-transparent focus-within:border-primary/20 focus-within:ring-1 focus-within:ring-primary/20">
+<div class="flex items-start gap-3">
+<div class="h-10 w-10 bg-white dark:bg-gray-700 rounded-lg flex items-center justify-center shrink-0 shadow-sm border border-gray-100 dark:border-gray-600">
+<span class="material-icons-round text-gray-400 dark:text-gray-300">fitness_center</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-2">
+<h4 class="text-sm font-semibold text-gray-800 dark:text-white truncate">Incline Dumbbell Press</h4>
+<div class="text-gray-400 hover:text-gray-600 cursor-move">
+<span class="material-icons-round text-lg">drag_handle</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div>
+<label class="block text-[10px] font-bold uppercase text-gray-400 dark:text-gray-500 mb-1 ml-1">Sets</label>
+<input class="w-full bg-white dark:bg-surface-dark border-gray-200 dark:border-gray-600 rounded-lg text-sm font-medium py-1.5 px-3 focus:border-primary focus:ring-primary dark:text-white shadow-sm" placeholder="0" type="number" value="3"/>
+</div>
+<div>
+<label class="block text-[10px] font-bold uppercase text-gray-400 dark:text-gray-500 mb-1 ml-1">Reps</label>
+<input class="w-full bg-white dark:bg-surface-dark border-gray-200 dark:border-gray-600 rounded-lg text-sm font-medium py-1.5 px-3 focus:border-primary focus:ring-primary dark:text-white shadow-sm" placeholder="0" type="text" value="10"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-gray-50 dark:bg-input-dark/50 rounded-xl p-3 group hover:bg-gray-100 dark:hover:bg-input-dark transition-colors border border-transparent focus-within:border-primary/20 focus-within:ring-1 focus-within:ring-primary/20">
+<div class="flex items-start gap-3">
+<div class="h-10 w-10 bg-white dark:bg-gray-700 rounded-lg flex items-center justify-center shrink-0 shadow-sm border border-gray-100 dark:border-gray-600">
+<span class="material-icons-round text-gray-400 dark:text-gray-300">fitness_center</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-2">
+<h4 class="text-sm font-semibold text-gray-800 dark:text-white truncate">Tricep Pushdown</h4>
+<div class="text-gray-400 hover:text-gray-600 cursor-move">
+<span class="material-icons-round text-lg">drag_handle</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div>
+<label class="block text-[10px] font-bold uppercase text-gray-400 dark:text-gray-500 mb-1 ml-1">Sets</label>
+<input class="w-full bg-white dark:bg-surface-dark border-gray-200 dark:border-gray-600 rounded-lg text-sm font-medium py-1.5 px-3 focus:border-primary focus:ring-primary dark:text-white shadow-sm" placeholder="0" type="number" value="4"/>
+</div>
+<div>
+<label class="block text-[10px] font-bold uppercase text-gray-400 dark:text-gray-500 mb-1 ml-1">Reps</label>
+<input class="w-full bg-white dark:bg-surface-dark border-gray-200 dark:border-gray-600 rounded-lg text-sm font-medium py-1.5 px-3 focus:border-primary focus:ring-primary dark:text-white shadow-sm" placeholder="0" type="text" value="15"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<button class="mt-4 w-full py-3 rounded-xl border border-dashed border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors flex items-center justify-center gap-2">
+<span class="material-icons-round text-base">add</span>
+                        Add Exercise
+                    </button>
+</div>
+<div class="bg-white dark:bg-surface-dark rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-gray-800 opacity-75">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-3 flex-1 mr-2">
+<span class="bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 text-xs font-bold px-2 py-1 rounded uppercase tracking-wide">Day 2</span>
+<input class="bg-transparent border-none p-0 text-base font-bold text-gray-800 dark:text-white focus:ring-0 w-full placeholder-gray-400" placeholder="Day Name" type="text" value="Pull (Back/Biceps)"/>
+</div>
+<span class="material-icons-round text-gray-400">expand_more</span>
+</div>
+</div>
+<div class="bg-white dark:bg-surface-dark rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-gray-800 opacity-75">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-3 flex-1 mr-2">
+<span class="bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-xs font-bold px-2 py-1 rounded uppercase tracking-wide">Day 3</span>
+<input class="bg-transparent border-none p-0 text-base font-bold text-gray-800 dark:text-white focus:ring-0 w-full placeholder-gray-400" placeholder="Day Name" type="text" value="Legs &amp; Shoulders"/>
+</div>
+<span class="material-icons-round text-gray-400">expand_more</span>
+</div>
+</div>
+</section>
+</main>
+<div class="absolute bottom-6 left-0 right-0 px-6 pointer-events-none">
+<button class="pointer-events-auto w-full bg-primary text-white font-bold text-lg py-4 rounded-2xl shadow-lg shadow-orange-500/30 active:scale-[0.98] transition-transform flex items-center justify-center gap-2">
+<span class="material-icons-round">save</span>
+                Create Program
+            </button>
+</div>
+</div>
+<script>
+        // Simple logic to toggle dark mode for demonstration if user prefers system dark mode
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+
+</body></html>
