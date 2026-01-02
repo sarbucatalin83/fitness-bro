@@ -1,0 +1,13 @@
+# Netlify configuration
+# Build is handled by GitHub Actions, not Netlify
+
+[build]
+  # No build command - we deploy pre-built files from GitHub Actions
+  command = "echo 'Build handled by GitHub Actions'"
+  publish = "dist/fitness-app/browser"
+
+# SPA routing - redirect all routes to index.html
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
