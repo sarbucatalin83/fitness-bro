@@ -54,32 +54,6 @@ interface DayForm {
           ></textarea>
         </div>
 
-        <!-- Difficulty & Duration -->
-        <div class="flex gap-2 flex-wrap">
-          <button
-            class="chip flex items-center gap-2"
-            [class.chip-active]="selectedDifficulty() === 'intermediate'"
-            [class.chip-inactive]="selectedDifficulty() !== 'intermediate'"
-            (click)="selectDifficulty('intermediate')"
-          >
-            <span class="material-icons-round text-base">signal_cellular_alt</span>
-            {{ formatDifficulty(selectedDifficulty()) }}
-          </button>
-          <button
-            class="chip flex items-center gap-2"
-            [class.chip-active]="true"
-            [class.chip-inactive]="false"
-          >
-            <span class="material-icons-round text-base">folder</span>
-            {{ selectedDuration() }} Weeks
-          </button>
-          <button
-            class="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors"
-          >
-            <span class="material-icons-round text-xl">add</span>
-          </button>
-        </div>
-
         <!-- Workout Schedule -->
         <section>
           <div class="flex items-center justify-between mb-3">
@@ -109,7 +83,7 @@ interface DayForm {
                       <input
                         type="text"
                         [(ngModel)]="day.name"
-                        class="font-semibold text-gray-900 bg-transparent border-none outline-none"
+                        class="font-semibold text-gray-900 bg-transparent border-b border-transparent hover:border-gray-300 focus:border-primary-500 outline-none transition-colors"
                         placeholder="Workout name"
                         (click)="$event.stopPropagation()"
                       />
@@ -213,33 +187,7 @@ export class CreateProgramComponent {
   selectedDifficulty = signal<Difficulty>('intermediate');
   selectedDuration = signal(4);
 
-  days = signal<DayForm[]>([
-    {
-      id: '1',
-      name: 'Push (Chest/Triceps)',
-      muscleGroups: 'Chest/Triceps',
-      isExpanded: true,
-      exercises: [
-        { exerciseId: '1', exerciseName: 'Bench Press', sets: 3, reps: '8-12' },
-        { exerciseId: '7', exerciseName: 'Incline Dumbbell Press', sets: 3, reps: '10' },
-        { exerciseId: '8', exerciseName: 'Tricep Pushdown', sets: 4, reps: '15' }
-      ]
-    },
-    {
-      id: '2',
-      name: 'Pull (Back/Biceps)',
-      muscleGroups: 'Back/Biceps',
-      isExpanded: false,
-      exercises: []
-    },
-    {
-      id: '3',
-      name: 'Legs & Shoulders',
-      muscleGroups: 'Legs/Shoulders',
-      isExpanded: false,
-      exercises: []
-    }
-  ]);
+  days = signal<DayForm[]>([]);
 
   selectDifficulty(difficulty: Difficulty): void {
     this.selectedDifficulty.set(difficulty);
@@ -286,7 +234,9 @@ export class CreateProgramComponent {
   }
 
   openDayMenu(dayId: string): void {
-    // TODO: Implement day menu (delete, duplicate, etc.)
+    if (confirm('Delete this day?')) {
+      this.days.update(days => days.filter(d => d.id !== dayId));
+    }
   }
 
   getEstimatedDuration(day: DayForm): number {
