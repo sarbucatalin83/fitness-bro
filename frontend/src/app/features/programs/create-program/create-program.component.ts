@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
+import { ExerciseSearchModalComponent } from '../../../shared/components/exercise-search-modal/exercise-search-modal.component';
 import { ProgramService } from '../../../core/services/program.service';
 import { ProgramExercise, WorkoutDay, Difficulty } from '../../../core/models';
 
@@ -16,7 +17,7 @@ interface DayForm {
 @Component({
   selector: 'app-create-program',
   standalone: true,
-  imports: [FormsModule, HeaderComponent],
+  imports: [FormsModule, HeaderComponent, ExerciseSearchModalComponent],
   template: `
     <div class="min-h-screen bg-background pb-28">
       <!-- Header -->
@@ -117,10 +118,24 @@ interface DayForm {
                             <div class="w-9 h-9 rounded-lg bg-gray-200 flex items-center justify-center">
                               <span class="material-icons-round text-gray-500 text-lg">fitness_center</span>
                             </div>
-                            <span class="font-medium text-gray-900">{{ exercise.exerciseName }}</span>
+                            <button
+                              class="font-medium text-gray-900 hover:text-primary-500 transition-colors text-left capitalize"
+                              (click)="navigateToExercise(exercise.exerciseId)"
+                              [disabled]="exercise.exerciseId.startsWith('custom-')"
+                              [class.cursor-pointer]="!exercise.exerciseId.startsWith('custom-')"
+                              [class.cursor-default]="exercise.exerciseId.startsWith('custom-')"
+                            >
+                              {{ exercise.exerciseName }}
+                              @if (!exercise.exerciseId.startsWith('custom-')) {
+                                <span class="material-icons-round text-xs align-middle ml-1 text-gray-400">open_in_new</span>
+                              }
+                            </button>
                           </div>
-                          <button class="text-gray-400 hover:text-gray-600">
-                            <span class="material-icons-round">drag_indicator</span>
+                          <button
+                            class="text-gray-400 hover:text-red-500 transition-colors"
+                            (click)="removeExercise(day.id, exercise.exerciseId)"
+                          >
+                            <span class="material-icons-round">close</span>
                           </button>
                         </div>
                         <div class="flex gap-3">
@@ -146,8 +161,8 @@ interface DayForm {
 
                     <!-- Add Exercise Button -->
                     <button
-                      class="w-full py-3 border-2 border-dashed border-gray-200 rounded-xl text-gray-400 font-medium flex items-center justify-center gap-2 hover:border-gray-300 hover:text-gray-500 transition-colors"
-                      (click)="addExercise(day.id)"
+                      class="w-full py-3 border-2 border-dashed border-gray-200 rounded-xl text-gray-400 font-medium flex items-center justify-center gap-2 hover:border-primary-300 hover:text-primary-500 transition-colors"
+                      (click)="openExerciseSearch(day.id)"
                     >
                       <span class="material-icons-round">add</span>
                       Add Exercise
@@ -170,6 +185,14 @@ interface DayForm {
           Create Program
         </button>
       </div>
+
+      <!-- Exercise Search Modal -->
+      @if (showExerciseSearch()) {
+        <app-exercise-search-modal
+          (close)="closeExerciseSearch()"
+          (exerciseSelected)="onExerciseSelected($event)"
+        />
+      }
     </div>
   `,
   styles: [`
@@ -188,6 +211,8 @@ export class CreateProgramComponent {
   selectedDuration = signal(4);
 
   days = signal<DayForm[]>([]);
+  showExerciseSearch = signal(false);
+  currentDayId = signal<string | null>(null);
 
   selectDifficulty(difficulty: Difficulty): void {
     this.selectedDifficulty.set(difficulty);
@@ -217,13 +242,27 @@ export class CreateProgramComponent {
     this.days.update(days => [...days, newDay]);
   }
 
-  addExercise(dayId: string): void {
+  openExerciseSearch(dayId: string): void {
+    this.currentDayId.set(dayId);
+    this.showExerciseSearch.set(true);
+  }
+
+  closeExerciseSearch(): void {
+    this.showExerciseSearch.set(false);
+    this.currentDayId.set(null);
+  }
+
+  onExerciseSelected(event: { id: string; name: string; isCustom: boolean }): void {
+    const dayId = this.currentDayId();
+    if (!dayId) return;
+
     const newExercise: ProgramExercise = {
-      exerciseId: Date.now().toString(),
-      exerciseName: 'New Exercise',
+      exerciseId: event.id,
+      exerciseName: event.name,
       sets: 3,
       reps: '10'
     };
+
     this.days.update(days =>
       days.map(d =>
         d.id === dayId
@@ -231,6 +270,24 @@ export class CreateProgramComponent {
           : d
       )
     );
+
+    this.closeExerciseSearch();
+  }
+
+  removeExercise(dayId: string, exerciseId: string): void {
+    this.days.update(days =>
+      days.map(d =>
+        d.id === dayId
+          ? { ...d, exercises: d.exercises.filter(e => e.exerciseId !== exerciseId) }
+          : d
+      )
+    );
+  }
+
+  navigateToExercise(exerciseId: string): void {
+    if (!exerciseId.startsWith('custom-')) {
+      this.router.navigate(['/exercises', exerciseId]);
+    }
   }
 
   openDayMenu(dayId: string): void {
