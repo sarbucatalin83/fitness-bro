@@ -1,6 +1,7 @@
 import { Component, inject, signal, output, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ExerciseDbService, ExerciseDbItem } from '../../../core/services/exercise-db.service';
+import { ExerciseService } from '../../../core/services/exercise.service';
+import { Exercise } from '../../../core/models';
 
 @Component({
   selector: 'app-exercise-search-modal',
@@ -74,13 +75,15 @@ import { ExerciseDbService, ExerciseDbItem } from '../../../core/services/exerci
                   class="w-full p-4 bg-gray-50 hover:bg-gray-100 rounded-xl text-left transition-colors flex items-center gap-4"
                   (click)="selectExercise(exercise)"
                 >
-                  <div class="w-12 h-12 rounded-xl bg-primary-50 flex items-center justify-center flex-shrink-0">
-                    <span class="material-icons-round text-primary-500">fitness_center</span>
+                  <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+                    [class]="exercise.iconColor || 'bg-primary-50'">
+                    <span class="material-icons-round"
+                      [class]="getIconColorClass(exercise.iconColor)">fitness_center</span>
                   </div>
                   <div class="flex-1 min-w-0">
                     <h3 class="font-semibold text-gray-900 capitalize truncate">{{ exercise.name }}</h3>
                     <p class="text-sm text-gray-500 capitalize truncate">
-                      {{ exercise.bodyPart }} • {{ exercise.equipment }}
+                      {{ exercise.muscleGroup }} • {{ exercise.equipment }}
                     </p>
                   </div>
                   <span class="material-icons-round text-gray-400">chevron_right</span>
@@ -120,10 +123,10 @@ import { ExerciseDbService, ExerciseDbItem } from '../../../core/services/exerci
   `]
 })
 export class ExerciseSearchModalComponent implements OnInit {
-  exerciseService = inject(ExerciseDbService);
+  exerciseService = inject(ExerciseService);
 
   searchQuery = '';
-  filteredExercises = signal<ExerciseDbItem[]>([]);
+  filteredExercises = signal<Exercise[]>([]);
 
   close = output<void>();
   exerciseSelected = output<{ id: string; name: string; isCustom: boolean }>();
@@ -136,32 +139,21 @@ export class ExerciseSearchModalComponent implements OnInit {
 
   onSearch(query: string): void {
     this.searchQuery = query;
+    this.exerciseService.setSearchQuery(query);
     this.updateFilteredExercises();
   }
 
   clearSearch(): void {
     this.searchQuery = '';
+    this.exerciseService.setSearchQuery('');
     this.updateFilteredExercises();
   }
 
   private updateFilteredExercises(): void {
-    const query = this.searchQuery.toLowerCase().trim();
-    const allExercises = this.exerciseService.allExercises();
-
-    if (!query) {
-      this.filteredExercises.set(allExercises.slice(0, 30));
-    } else {
-      const filtered = allExercises.filter(e =>
-        e.name.toLowerCase().includes(query) ||
-        e.bodyPart.toLowerCase().includes(query) ||
-        e.target.toLowerCase().includes(query) ||
-        e.equipment.toLowerCase().includes(query)
-      ).slice(0, 50);
-      this.filteredExercises.set(filtered);
-    }
+    this.filteredExercises.set(this.exerciseService.filteredExercises().slice(0, 50));
   }
 
-  selectExercise(exercise: ExerciseDbItem): void {
+  selectExercise(exercise: Exercise): void {
     this.exerciseSelected.emit({
       id: exercise.id,
       name: exercise.name,
@@ -175,5 +167,11 @@ export class ExerciseSearchModalComponent implements OnInit {
       name: this.searchQuery,
       isCustom: true
     });
+  }
+
+  getIconColorClass(iconColor: string): string {
+    if (!iconColor) return 'text-primary-500';
+    const match = iconColor.match(/text-(\w+)-\d+/);
+    return match ? iconColor.split(' ').find(c => c.startsWith('text-')) || 'text-primary-500' : 'text-primary-500';
   }
 }
