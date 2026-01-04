@@ -52,12 +52,17 @@ export class ExerciseService {
     this.loadExercises();
   }
 
-  async loadExercises(): Promise<void> {
+  async loadExercises(search?: string): Promise<void> {
     this.loading.set(true);
     this.error.set(null);
 
     try {
-      const response = await fetch(`${environment.supabaseUrl}/functions/v1/exercises`, {
+      let url = `${environment.supabaseUrl}/functions/v1/exercises?limit=100`;
+      if (search) {
+        url += `&q=${encodeURIComponent(search)}`;
+      }
+
+      const response = await fetch(url, {
         headers: {
           'Authorization': `Bearer ${environment.supabaseAnonKey}`,
           'Content-Type': 'application/json'
@@ -68,8 +73,9 @@ export class ExerciseService {
         throw new Error('Failed to load exercises');
       }
 
-      const data = await response.json();
-      const mappedExercises: Exercise[] = data.map(this.mapExercise);
+      const result = await response.json();
+      const exercisesData = result.data || result;
+      const mappedExercises: Exercise[] = exercisesData.map((e: any) => this.mapExercise(e));
       this.exercises.set(mappedExercises);
     } catch (err) {
       console.error('Error loading exercises:', err);
