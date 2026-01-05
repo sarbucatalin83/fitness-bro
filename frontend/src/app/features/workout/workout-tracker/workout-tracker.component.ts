@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, OnDestroy, signal } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { WorkoutService } from '../../../core/services/workout.service';
 import { WorkoutSet } from '../../../core/models';
@@ -199,7 +199,6 @@ import { WorkoutSet } from '../../../core/models';
   `]
 })
 export class WorkoutTrackerComponent implements OnInit, OnDestroy {
-  private route = inject(ActivatedRoute);
   private router = inject(Router);
   private workoutService = inject(WorkoutService);
 
@@ -211,13 +210,7 @@ export class WorkoutTrackerComponent implements OnInit, OnDestroy {
   private timerInterval: any;
 
   ngOnInit(): void {
-    const programId = this.route.snapshot.paramMap.get('programId');
-    const dayId = this.route.snapshot.paramMap.get('dayId');
-
-    if (programId && dayId && !this.activeWorkout()) {
-      this.workoutService.startWorkout(programId, dayId);
-    }
-
+    // Workout data is pre-loaded by workoutResolver
     // Start rest timer tick
     this.timerInterval = setInterval(() => {
       if (this.workoutService.isRestTimerRunning()) {

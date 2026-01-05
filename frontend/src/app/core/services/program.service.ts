@@ -1,4 +1,6 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 import { Program, ActiveProgram, WorkoutDay, ProgramExercise } from '../models';
 import { SupabaseService } from './supabase.service';
 import { environment } from '../../../environments/environment';
@@ -7,6 +9,7 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root'
 })
 export class ProgramService {
+  private http = inject(HttpClient);
   private supabaseService = inject(SupabaseService);
   private programs = signal<Program[]>([]);
   private loading = signal<boolean>(false);
