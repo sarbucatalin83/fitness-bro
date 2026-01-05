@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, OnDestroy, signal } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { WorkoutService } from '../../../core/services/workout.service';
 import { WorkoutSet } from '../../../core/models';
@@ -199,7 +199,6 @@ import { WorkoutSet } from '../../../core/models';
   `]
 })
 export class WorkoutTrackerComponent implements OnInit, OnDestroy {
-  private route = inject(ActivatedRoute);
   private router = inject(Router);
   private workoutService = inject(WorkoutService);
 
