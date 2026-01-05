@@ -29,7 +29,8 @@ jobs:
         run: npm ci
 
       - name: Build Angular app
-        run: npm run frontend:build -- --configuration production
+        working-directory: frontend
+        run: npm run build -- --configuration production
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
