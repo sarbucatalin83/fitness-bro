@@ -1,13 +1,14 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 import { Exercise, MuscleGroup } from '../models';
-import { SupabaseService } from './supabase.service';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExerciseService {
-  private supabaseService = inject(SupabaseService);
+  private http = inject(HttpClient);
   private exercises = signal<Exercise[]>([]);
   private selectedCategory = signal<MuscleGroup | 'all'>('all');
   private searchQuery = signal<string>('');
@@ -62,18 +63,7 @@ export class ExerciseService {
         url += `&q=${encodeURIComponent(search)}`;
       }
 
-      const response = await fetch(url, {
-        headers: {
-          'Authorization': `Bearer ${environment.supabaseAnonKey}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to load exercises');
-      }
-
-      const result = await response.json();
+      const result = await firstValueFrom(this.http.get<any>(url));
       const exercisesData = result.data || result;
       const mappedExercises: Exercise[] = exercisesData.map((e: any) => this.mapExercise(e));
       this.exercises.set(mappedExercises);
@@ -91,16 +81,9 @@ export class ExerciseService {
     if (cached) return cached;
 
     try {
-      const response = await fetch(`${environment.supabaseUrl}/functions/v1/exercises/${id}`, {
-        headers: {
-          'Authorization': `Bearer ${environment.supabaseAnonKey}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (!response.ok) return undefined;
-
-      const data = await response.json();
+      const data = await firstValueFrom(
+        this.http.get<any>(`${environment.supabaseUrl}/functions/v1/exercises/${id}`)
+      );
       return this.mapExercise(data);
     } catch (err) {
       console.error('Error fetching exercise:', err);

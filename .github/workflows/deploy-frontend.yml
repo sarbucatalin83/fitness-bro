@@ -23,14 +23,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
 
       - name: Install dependencies
-        working-directory: frontend
         run: npm ci
 
       - name: Build Angular app
-        working-directory: frontend
-        run: npm run build -- --configuration production
+        run: npm run frontend:build -- --configuration production
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}

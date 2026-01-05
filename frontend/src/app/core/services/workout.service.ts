@@ -1,4 +1,6 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 import { ActiveWorkout, WorkoutExercise, WorkoutSet, VolumeData, WeeklyStats } from '../models';
 import { ProgramService } from './program.service';
 import { SupabaseService } from './supabase.service';
@@ -8,6 +10,7 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root'
 })
 export class WorkoutService {
+  private http = inject(HttpClient);
   private supabaseService = inject(SupabaseService);
   private programService = inject(ProgramService);
 
@@ -60,23 +63,11 @@ export class WorkoutService {
     }
   }
 
-  private getAuthHeaders(): HeadersInit {
-    const token = this.supabaseService.getAccessToken();
-    return {
-      'Authorization': `Bearer ${token || environment.supabaseAnonKey}`,
-      'Content-Type': 'application/json'
-    };
-  }
-
   async loadWeeklyStats(): Promise<void> {
     try {
-      const response = await fetch(`${environment.supabaseUrl}/functions/v1/stats/weekly?weeks=1`, {
-        headers: this.getAuthHeaders()
-      });
-
-      if (!response.ok) return;
-
-      const data = await response.json();
+      const data = await firstValueFrom(
+        this.http.get<any>(`${environment.supabaseUrl}/functions/v1/stats/weekly?weeks=1`)
+      );
       this.weeklyStatsData.set({
         volumeTrend: data.volumeTrend.map((v: any) => ({
           day: v.day,
@@ -94,17 +85,9 @@ export class WorkoutService {
     this.loading.set(true);
 
     try {
-      const response = await fetch(`${environment.supabaseUrl}/functions/v1/workouts`, {
-        method: 'POST',
-        headers: this.getAuthHeaders(),
-        body: JSON.stringify({ programId, dayId })
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to start workout');
-      }
-
-      const session = await response.json();
+      const session = await firstValueFrom(
+        this.http.post<any>(`${environment.supabaseUrl}/functions/v1/workouts`, { programId, dayId })
+      );
 
       const exercises: WorkoutExercise[] = (session.sets || [])
         .reduce((acc: WorkoutExercise[], set: any) => {
@@ -204,15 +187,13 @@ export class WorkoutService {
     // Sync to server if we have a set ID
     if (set.id) {
       try {
-        await fetch(`${environment.supabaseUrl}/functions/v1/workouts/${workout.id}/sets/${set.id}`, {
-          method: 'PATCH',
-          headers: this.getAuthHeaders(),
-          body: JSON.stringify({
+        await firstValueFrom(
+          this.http.patch(`${environment.supabaseUrl}/functions/v1/workouts/${workout.id}/sets/${set.id}`, {
             weight: data.weight ?? set.weight,
             reps: data.reps ?? set.reps,
             completed: data.completed ?? set.completed
           })
-        });
+        );
       } catch (err) {
         console.error('Error updating set:', err);
       }
@@ -270,27 +251,21 @@ export class WorkoutService {
 
     // Add to server
     try {
-      const response = await fetch(`${environment.supabaseUrl}/functions/v1/workouts/${workout.id}/sets`, {
-        method: 'POST',
-        headers: this.getAuthHeaders(),
-        body: JSON.stringify({
+      const newSet = await firstValueFrom(
+        this.http.post<any>(`${environment.supabaseUrl}/functions/v1/workouts/${workout.id}/sets`, {
           exerciseId: currentExercise.exerciseId,
           setNumber: newSetNumber
         })
+      );
+      // Update the set ID
+      this.currentWorkout.update(w => {
+        if (!w) return null;
+        const exercises = [...w.exercises];
+        const sets = [...exercises[w.currentExerciseIndex].sets];
+        sets[sets.length - 1] = { ...sets[sets.length - 1], id: newSet.id };
+        exercises[w.currentExerciseIndex] = { ...exercises[w.currentExerciseIndex], sets };
+        return { ...w, exercises };
       });
-
-      if (response.ok) {
-        const newSet = await response.json();
-        // Update the set ID
-        this.currentWorkout.update(w => {
-          if (!w) return null;
-          const exercises = [...w.exercises];
-          const sets = [...exercises[w.currentExerciseIndex].sets];
-          sets[sets.length - 1] = { ...sets[sets.length - 1], id: newSet.id };
-          exercises[w.currentExerciseIndex] = { ...exercises[w.currentExerciseIndex], sets };
-          return { ...w, exercises };
-        });
-      }
     } catch (err) {
       console.error('Error adding set:', err);
     }
@@ -314,11 +289,9 @@ export class WorkoutService {
     if (!workout) return;
 
     try {
-      await fetch(`${environment.supabaseUrl}/functions/v1/workouts/${workout.id}/complete`, {
-        method: 'PUT',
-        headers: this.getAuthHeaders(),
-        body: JSON.stringify({ notes })
-      });
+      await firstValueFrom(
+        this.http.put(`${environment.supabaseUrl}/functions/v1/workouts/${workout.id}/complete`, { notes })
+      );
 
       // Reload stats after completing workout
       this.loadWeeklyStats();
