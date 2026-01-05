@@ -211,13 +211,7 @@ export class WorkoutTrackerComponent implements OnInit, OnDestroy {
   private timerInterval: any;
 
   ngOnInit(): void {
-    const programId = this.route.snapshot.paramMap.get('programId');
-    const dayId = this.route.snapshot.paramMap.get('dayId');
-
-    if (programId && dayId && !this.activeWorkout()) {
-      this.workoutService.startWorkout(programId, dayId);
-    }
-
+    // Workout data is pre-loaded by workoutResolver
     // Start rest timer tick
     this.timerInterval = setInterval(() => {
       if (this.workoutService.isRestTimerRunning()) {

@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard, publicGuard } from './core/guards/auth.guard';
+import { workoutResolver } from './core/resolvers/workout.resolver';
 
 export const routes: Routes = [
   {
@@ -63,7 +64,8 @@ export const routes: Routes = [
       import('./features/workout/workout-tracker/workout-tracker.component').then(
         m => m.WorkoutTrackerComponent
       ),
-    canActivate: [authGuard]
+    canActivate: [authGuard],
+    resolve: { workout: workoutResolver }
   },
   {
     path: '**',
